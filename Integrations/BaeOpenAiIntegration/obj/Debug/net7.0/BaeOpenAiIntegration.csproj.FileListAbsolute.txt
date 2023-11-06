@@ -1,0 +1,15 @@
+/home/lara/Documents/School/ProjectBae/BaeAPI/Integrations/BaeOpenAiIntegration/bin/Debug/net7.0/BaeOpenAiIntegration.deps.json
+/home/lara/Documents/School/ProjectBae/BaeAPI/Integrations/BaeOpenAiIntegration/bin/Debug/net7.0/BaeOpenAiIntegration.dll
+/home/lara/Documents/School/ProjectBae/BaeAPI/Integrations/BaeOpenAiIntegration/bin/Debug/net7.0/BaeOpenAiIntegration.pdb
+/home/lara/Documents/School/ProjectBae/BaeAPI/Integrations/BaeOpenAiIntegration/bin/Debug/net7.0/BaeIntegrations.dll
+/home/lara/Documents/School/ProjectBae/BaeAPI/Integrations/BaeOpenAiIntegration/bin/Debug/net7.0/BaeIntegrations.pdb
+/home/lara/Documents/School/ProjectBae/BaeAPI/Integrations/BaeOpenAiIntegration/obj/Debug/net7.0/BaeOpenAiIntegration.csproj.AssemblyReference.cache
+/home/lara/Documents/School/ProjectBae/BaeAPI/Integrations/BaeOpenAiIntegration/obj/Debug/net7.0/BaeOpenAiIntegration.GeneratedMSBuildEditorConfig.editorconfig
+/home/lara/Documents/School/ProjectBae/BaeAPI/Integrations/BaeOpenAiIntegration/obj/Debug/net7.0/BaeOpenAiIntegration.AssemblyInfoInputs.cache
+/home/lara/Documents/School/ProjectBae/BaeAPI/Integrations/BaeOpenAiIntegration/obj/Debug/net7.0/BaeOpenAiIntegration.AssemblyInfo.cs
+/home/lara/Documents/School/ProjectBae/BaeAPI/Integrations/BaeOpenAiIntegration/obj/Debug/net7.0/BaeOpenAiIntegration.csproj.CoreCompileInputs.cache
+/home/lara/Documents/School/ProjectBae/BaeAPI/Integrations/BaeOpenAiIntegration/obj/Debug/net7.0/BaeOpenAiIntegration.csproj.CopyComplete
+/home/lara/Documents/School/ProjectBae/BaeAPI/Integrations/BaeOpenAiIntegration/obj/Debug/net7.0/BaeOpenAiIntegration.dll
+/home/lara/Documents/School/ProjectBae/BaeAPI/Integrations/BaeOpenAiIntegration/obj/Debug/net7.0/refint/BaeOpenAiIntegration.dll
+/home/lara/Documents/School/ProjectBae/BaeAPI/Integrations/BaeOpenAiIntegration/obj/Debug/net7.0/BaeOpenAiIntegration.pdb
+/home/lara/Documents/School/ProjectBae/BaeAPI/Integrations/BaeOpenAiIntegration/obj/Debug/net7.0/ref/BaeOpenAiIntegration.dll

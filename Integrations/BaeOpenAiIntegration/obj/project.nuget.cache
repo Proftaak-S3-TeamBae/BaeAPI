@@ -1,0 +1,10 @@
+{
+  "version": 2,
+  "dgSpecHash": "k302TurfEyi3e/NNG6nzNjXrKkpFE2QgN0omKX6OC1KVNoC2jZGN62jBbm+NmYVyFzIOt7ZE/z6Wr6JP4IEIwA==",
+  "success": true,
+  "projectFilePath": "/home/lara/Documents/School/ProjectBae/BaeAPI/Integrations/BaeOpenAiIntegration/BaeOpenAiIntegration.csproj",
+  "expectedPackageFiles": [
+    "/home/lara/.nuget/packages/microsoft.aspnetcore.app.ref/7.0.13/microsoft.aspnetcore.app.ref.7.0.13.nupkg.sha512"
+  ],
+  "logs": []
+}
