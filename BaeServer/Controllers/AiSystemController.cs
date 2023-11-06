@@ -1,13 +1,13 @@
 using Microsoft.AspNetCore.Mvc;
 
-namespace BaeServer.AiSystemController;
+namespace BaeServer.Controllers;
 
 /// <summary>
 /// The controller for fetching detected AI systems from the integrations.
 /// </summary>
 [ApiController]
 [Route("api/[controller]")]
-public class ApiSystemController : Controller
+public class AiSystemController : Controller
 {
     /// <summary>
     /// Get all detected AI systems from the integrations related to the user.
