@@ -1,3 +1,4 @@
+using BaeServer.DTO.AiSystem;
 using Microsoft.AspNetCore.Mvc;
 
 namespace BaeServer.Controllers;
@@ -14,11 +15,25 @@ public class AiSystemController : Controller
     /// </summary>
     /// <returns>The detected AI systems from the integrations.</returns>
     [HttpGet]
-    public ActionResult Get()
+    public ActionResult<List<AiSystemDTO>> Get()
     {
-        return Ok(new
-        {
-            Name = "Hello, world!"
+        return Ok(new List<AiSystemDTO> {
+            new()
+            {
+                Name = "gpt-3.5",
+                Type = "LLM",
+                Source = "OpenAI",
+                Description = "Chatbot that can be used to generate text.",
+                DateAdded = DateTime.Now
+            },
+            new ()
+            {
+                Name = "gpt-4",
+                Type = "LLM",
+                Source = "OpenAI",
+                Description = "Chatbot that can be used to generate text.",
+                DateAdded = DateTime.Now
+            }
         });
     }
 }
