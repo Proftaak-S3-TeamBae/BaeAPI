@@ -12,17 +12,20 @@ public class OpenAiIntegration : IAiServiceIntegration
     /// <summary>
     /// The API key for OpenAI.
     /// </summary>
-    public string ApiKey { get; set; }
+    public string? ApiKey { get; set; }
 
     public string Id { get; set; } = "BaeOpenAiIntegration";
 
-    public OpenAiIntegration(string apiKey)
+    public OpenAiIntegration(string? apiKey)
     {
         ApiKey = apiKey;
     }
 
     public async Task<List<FetchedAiSystem>> GetAiSystemsAsync()
     {
+        if (ApiKey == null)
+            throw new Exception("No API key provided");
+
         using HttpClient client = new HttpClient();
         client.DefaultRequestHeaders.Add("Authorization", $"Bearer {ApiKey}");
         var response = await client.GetAsync("https://api.openai.com/v1/models");
