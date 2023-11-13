@@ -1,3 +1,4 @@
+using BaeAiSystem;
 using BaeServer.DTO.AiSystem;
 using Microsoft.AspNetCore.Mvc;
 
@@ -10,30 +11,28 @@ namespace BaeServer.Controllers;
 [Route("api/[controller]")]
 public class AiSystemController : Controller
 {
+    private readonly IAiSystemService _aiSystemService;
+
+    public AiSystemController(IAiSystemService aiSystemService)
+    {
+        _aiSystemService = aiSystemService;
+    }
+
     /// <summary>
     /// Get all detected AI systems from the integrations related to the user.
     /// </summary>
     /// <returns>The detected AI systems from the integrations.</returns>
     [HttpGet]
-    public ActionResult<List<AiSystemDTO>> Get()
+    public async Task<ActionResult<List<AiSystemDTO>>> Get()
     {
-        return Ok(new List<AiSystemDTO> {
-            new()
-            {
-                Name = "gpt-3.5",
-                Type = "LLM",
-                Source = "OpenAI",
-                Description = "Chatbot that can be used to generate text.",
-                DateAdded = DateTime.Now
-            },
-            new ()
-            {
-                Name = "gpt-4",
-                Type = "LLM",
-                Source = "OpenAI",
-                Description = "Chatbot that can be used to generate text.",
-                DateAdded = DateTime.Now
-            }
-        });
+        var aiSystem = await _aiSystemService.GetAiSystemsAsync();
+        return Ok(aiSystem.Select(aiSystem => new AiSystemDTO
+        {
+            Name = aiSystem.Name,
+            Type = aiSystem.Type,
+            Source = aiSystem.Source,
+            Description = aiSystem.Description,
+            DateAdded = aiSystem.DateAdded
+        }));
     }
 }

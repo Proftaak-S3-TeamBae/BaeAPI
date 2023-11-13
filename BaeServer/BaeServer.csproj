@@ -11,4 +11,10 @@
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.5.0" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\BaeAiSystem\BaeAiSystem.csproj" />
+    <ProjectReference Include="..\Integrations\BaeOpenAiIntegration\BaeOpenAiIntegration.csproj" />
+    <ProjectReference Include="..\BeaIntegrations\BaeIntegrations.csproj" />
+  </ItemGroup>
+
 </Project>
