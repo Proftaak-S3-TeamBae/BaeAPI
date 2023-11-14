@@ -1,4 +1,5 @@
 using BaeAiSystem;
+using BaeServer.API;
 using BaeServer.DTO.AiSystem;
 using Microsoft.AspNetCore.Mvc;
 
@@ -23,16 +24,33 @@ public class AiSystemController : Controller
     /// </summary>
     /// <returns>The detected AI systems from the integrations.</returns>
     [HttpGet]
-    public async Task<ActionResult<List<AiSystemDTO>>> Get()
+    public async Task<ActionResult<List<AiSystemDTO>>> Get([FromQuery] int page = 0)
     {
-        var aiSystem = await _aiSystemService.GetAiSystemsAsync();
-        return Ok(aiSystem.Select(aiSystem => new AiSystemDTO
+        var systemList = await _aiSystemService.GetAiSystemsAsync();
+        List<AiSystemDTO> systems = new();
+        const int PAGE_MAX = 10;
+        int startPos = page * PAGE_MAX;
+
+        for (int i = startPos; i < startPos + PAGE_MAX; i++)
         {
-            Name = aiSystem.Name,
-            Type = aiSystem.Type,
-            Source = aiSystem.Source,
-            Description = aiSystem.Description,
-            DateAdded = aiSystem.DateAdded
-        }));
+            if (i >= systemList.Count)
+                break;
+
+            systems.Add(new AiSystemDTO
+            {
+                Name = systemList[i].Name,
+                DateAdded = systemList[i].DateAdded,
+                Description = systemList[i].Description,
+                Source = systemList[i].Source,
+                Type = systemList[i].Type
+            });
+        }
+
+        return Ok(new PagedResponse<AiSystemDTO>
+        {
+            CurrentPage = page,
+            TotalPages = systemList.Count / PAGE_MAX,
+            Data = systems
+        });
     }
 }
