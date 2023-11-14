@@ -40,25 +40,4 @@ public class AiServiceIntegrationManager
 
         return aiSystems;
     }
-
-    /// <summary>
-    /// Add AI systems to the list of approved systems
-    /// </summary>
-    /// <param name="aiSystems">The AI systems to add.</param>
-    public async Task ApproveAiSystemsAsync(List<FetchedAiSystem> aiSystems)
-    {
-        throw new NotImplementedException(); // TODO: Implement when database connection added
-    }
-
-    /// <summary>
-    /// Add AI systems to the list of disapproved systems
-    /// </summary>
-    /// <param name="aiSystems">The AI systems to add.</param>
-    public async Task DisapproveAiSystemsAsync(List<FetchedAiSystem> aiSystems)
-    {
-        throw new NotImplementedException(); // TODO: Implement when database connection added
-    } Task DisapprovedAiSystemsAsync(List<FetchedAiSystem> aisystems)
-    {
-        throw new NotImplementedException(); // TODO: Implement when database connection added
-    }
 }

@@ -25,38 +25,8 @@ public class AiSystemService : IAiSystemService
             Description = aiSystem.Description,
             DateAdded = aiSystem.DateAdded
         }).ToList();
-
-
-    public async Task ApproveAiSystemsAsync(List<AiSystem> aiSystems)
-    {
-
-        var approvedSystems = aiSystems.Select(aiSystem => new FetchedAiSystem
-        {
-            Name = aiSystem.Name,
-            Type = aiSystem.Type,
-            Source = aiSystem.Source,
-            Description = aiSystem.Description,
-            DateAdded = aiSystem.DateAdded
-        }).ToList();
-
-        await _integrationManager.ApproveAiSystemsAsync(approvedSystems);
-    }
-
-    /// <summary>
-    /// Add AI systems to the list of disapproved systems
-    /// </summary>
-    /// <param name="aiSystems">The AI systems to add.</param>
-    public async Task DisapproveAiSystemsAsync(List<AiSystem> aiSystems)
-    {
-        var disapprovedSystems = aiSystems.Select(aiSystem => new FetchedAiSystem
-        {
-            Name = aiSystem.Name,
-            Type = aiSystem.Type,
-            Source = aiSystem.Source,
-            Description = aiSystem.Description,
-            DateAdded = aiSystem.DateAdded
-        }).ToList();
-
-        await _integrationManager.DisapproveAiSystemsAsync(disapprovedSystems);
-    }       
 }
+
+// Post Approved list Must have
+// Post Disapproved list Should have
+// Get Approved list for user
