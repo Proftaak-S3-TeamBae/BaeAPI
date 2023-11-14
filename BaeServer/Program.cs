@@ -1,4 +1,5 @@
 using BaeAiSystem;
+using BaeAiSystem.Config;
 using BaeIntegrations;
 using BaeOpenAiIntegration;
 using BaeOpenAiIntegration.Service;
@@ -48,6 +49,10 @@ AddServicesToContainer(builder.Services, builder.Configuration);
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+
+// Add Database config
+builder.Services.Configure<AIScannerDatabaseSettings>(
+    builder.Configuration.GetSection("AIScannerDatabase"));
 
 var app = builder.Build();
 

@@ -53,4 +53,7 @@ public class AiSystemController : Controller
             Data = systems
         });
     }
+    // Get of Approved list Must have
+    // Post of Approved list Must have
+    // Post of disapproved list Should have
 }

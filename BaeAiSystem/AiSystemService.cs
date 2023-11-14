@@ -26,3 +26,7 @@ public class AiSystemService : IAiSystemService
             DateAdded = aiSystem.DateAdded
         }).ToList();
 }
+
+// Post Approved list Must have
+// Post Disapproved list Should have
+// Get Approved list for user
