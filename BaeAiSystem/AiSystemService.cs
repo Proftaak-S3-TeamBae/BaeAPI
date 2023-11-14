@@ -25,16 +25,8 @@ public class AiSystemService : IAiSystemService
             Description = aiSystem.Description,
             DateAdded = aiSystem.DateAdded
         }).ToList();
-
-    public Task ApproveAiSystemsAsync(List<AiSystem> aiSystems)
-    {
-        // TODO: Implement once the database is implemented.
-        throw new NotImplementedException();
-    }
-
-    public Task DisapproveAiSystemsAsync(List<AiSystem> aiSystems)
-    {
-        throw new NotImplementedException();
-    }
-
 }
+
+// Post Approved list Must have
+// Post Disapproved list Should have
+// Get Approved list for user
