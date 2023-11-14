@@ -35,6 +35,20 @@ public class AiSystemController : Controller
             DateAdded = aiSystem.DateAdded
         }));
     }
+    [HttpPost]
+    [Route("/approved")]
+    public async Task ApprovedAiSystemList(List<AiSystemDTO> dtos)
+    {
+        var systems = dtos.Select(aiSystem => new AiSystem
+        {
+            Name = aiSystem.Name,
+            Type = aiSystem.Type,
+            Source = aiSystem.Source,
+            Description = aiSystem.Description,
+            DateAdded = aiSystem.DateAdded
+        }).ToList();
+        await _aiSystemService.ApproveAiSystemsAsync(systems);
+    }
     // Get of Approved list Must have
     // Post of Approved list Must have
     // Post of disapproved list Should have
