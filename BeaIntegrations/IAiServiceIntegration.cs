@@ -1,3 +1,5 @@
+using BaeDB;
+
 namespace BaeIntegrations;
 
 /// <summary>
@@ -9,6 +11,12 @@ public interface IAiServiceIntegration
     /// The id of the integration.
     /// </summary>
     public string Id { get; protected set; }
+
+    /// <summary>
+    /// Initialize the integration.
+    /// </summary>
+    /// <param name="dbContext"></param>
+    public void Initialize(BaeDbContext dbContext);
 
     /// <summary>
     /// Get all AI systems from the integration.

@@ -10,12 +10,12 @@ public interface IOpenAiService
     /// This will get stored in the database.
     /// </summary>
     /// <returns></returns>
-    public Task RegisterKey(string key);
+    public Task RegisterKeyAsync(string key);
 
     /// <summary>
     /// Remove an OpenAI API key.
     /// This will remove the key from the database.
     /// </summary>
     /// <returns></returns>
-    public Task RemoveKey();
+    public Task RemoveKeyAsync();
 }

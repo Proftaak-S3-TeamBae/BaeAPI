@@ -1,19 +1,23 @@
 
 namespace BaeAiSystem;
 
+using BaeDB;
+using BaeDB.Entity;
 using BaeIntegrations;
+using Microsoft.EntityFrameworkCore;
 
 /// <summary>
 /// The service for fetching AI systems.
 /// </summary>
 public class AiSystemService : IAiSystemService
 {
-    // The integration manager.
     private readonly AiServiceIntegrationManager _integrationManager;
+    private readonly BaeDbContext _dbcontext;
 
-    public AiSystemService(AiServiceIntegrationManager integrationManager)
+    public AiSystemService(AiServiceIntegrationManager integrationManager, BaeDbContext dbcontext)
     {
         _integrationManager = integrationManager;
+        _dbcontext = dbcontext;
     }
 
     public async Task<List<AiSystem>> GetAiSystemsAsync()
@@ -21,12 +25,44 @@ public class AiSystemService : IAiSystemService
         {
             Name = aiSystem.Name,
             Type = aiSystem.Type,
-            Source = aiSystem.Source,
-            Description = aiSystem.Description,
+            Integration = aiSystem.Integration,
+            Purpose = aiSystem.Purpose,
             DateAdded = aiSystem.DateAdded
         }).ToList();
-}
 
-// Post Approved list Must have
-// Post Disapproved list Should have
-// Get Approved list for user
+    public async Task ApproveAiSystemsAsync(List<AiSystem> aiSystems)
+    {
+        aiSystems.ForEach(aisystem =>
+        {
+            string id = aisystem.GenerateId();
+            // Check if the AI system already exists.
+            if (_dbcontext.AiSystems.Any(aiSystem => aiSystem.Id == id))
+                return;
+            _dbcontext.AiSystems.Add(new AiSystemEntity
+            {
+                Id = id,
+                Name = aisystem.Name,
+                Type = aisystem.Type,
+                Integration = aisystem.Integration,
+                Purpose = aisystem.Purpose,
+                DateAdded = aisystem.DateAdded
+            });
+        });
+        await _dbcontext.SaveChangesAsync();
+    }
+
+    public async Task<List<AiSystem>> GetApprovedAiSystemsAsync()
+    {
+        return new();
+    }
+
+    public async Task DisapproveAiSystemsAsync(List<AiSystem> aiSystems)
+    {
+
+    }
+
+    public async Task<List<AiSystem>> GetDisapprovedAiSystemsAsync()
+    {
+        return new();
+    }
+}

@@ -1,4 +1,5 @@
 ﻿using System.Text.Json;
+using BaeDB;
 using BaeIntegrations;
 using BaeOpenAiIntegration.DTO;
 
@@ -19,6 +20,16 @@ public class OpenAiIntegration : IAiServiceIntegration
     public OpenAiIntegration(string? apiKey)
     {
         ApiKey = apiKey;
+    }
+
+    public void Initialize(BaeDbContext dbContext)
+    {
+        // Fetch the api key from the database.
+        var apiKey = dbContext.OpenAiIntegration.FirstOrDefault();
+        if (apiKey != null)
+        {
+            ApiKey = apiKey.ApiKey;
+        }
     }
 
     public async Task<List<FetchedAiSystem>> GetAiSystemsAsync()
@@ -44,8 +55,8 @@ public class OpenAiIntegration : IAiServiceIntegration
             {
                 Name = model.Id ?? "Unknown",
                 Type = "LLM",
-                Source = "OpenAI",
-                Description = "",
+                Integration = 1,
+                Purpose = "",
                 DateAdded = DateTime.Now
             });
         }

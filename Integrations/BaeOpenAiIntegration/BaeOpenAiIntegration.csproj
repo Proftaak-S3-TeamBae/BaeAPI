@@ -2,6 +2,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\BeaIntegrations\BaeIntegrations.csproj" />
+    <ProjectReference Include="..\..\BaeDB\BaeDB.csproj" />
   </ItemGroup>
 
   <ItemGroup>

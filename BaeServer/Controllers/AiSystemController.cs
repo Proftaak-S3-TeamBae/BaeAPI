@@ -40,8 +40,8 @@ public class AiSystemController : Controller
             {
                 Name = systemList[i].Name,
                 DateAdded = systemList[i].DateAdded,
-                Description = systemList[i].Description,
-                Source = systemList[i].Source,
+                Description = systemList[i].Purpose,
+                Source = ((Integration)systemList[i].Integration).ToString(), // Hacky but not a crime!
                 Type = systemList[i].Type
             });
         }
@@ -53,7 +53,4 @@ public class AiSystemController : Controller
             Data = systems
         });
     }
-    // Get of Approved list Must have
-    // Post of Approved list Must have
-    // Post of disapproved list Should have
 }
