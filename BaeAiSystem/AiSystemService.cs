@@ -25,8 +25,24 @@ public class AiSystemService : IAiSystemService
             Description = aiSystem.Description,
             DateAdded = aiSystem.DateAdded
         }).ToList();
-}
 
-// Post Approved list Must have
-// Post Disapproved list Should have
-// Get Approved list for user
+    public async Task ApproveAiSystemsAsync(List<AiSystem> aiSystems)
+    {
+
+    }
+
+    public async Task<List<AiSystem>> GetApprovedAiSystemsAsync()
+    {
+        return new();
+    }
+
+    public async Task DisapproveAiSystemsAsync(List<AiSystem> aiSystems)
+    {
+
+    }
+
+    public async Task<List<AiSystem>> GetDisapprovedAiSystemsAsync()
+    {
+        return new();
+    }
+}

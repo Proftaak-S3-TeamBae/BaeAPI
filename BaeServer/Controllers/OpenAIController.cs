@@ -1,3 +1,4 @@
+using BaeOpenAiIntegration.Service;
 using Microsoft.AspNetCore.Mvc;
 
 namespace BaeServer.Controllers;
@@ -9,15 +10,23 @@ namespace BaeServer.Controllers;
 [Route("api/integration/[controller]")]
 public class OpenAiController : Controller
 {
+    private readonly IOpenAiService _openAiService;
+
+    public OpenAiController(IOpenAiService openAiService)
+    {
+        _openAiService = openAiService;
+    }
+
     /// <summary>
     /// Register an OpenAI API key.
     /// This will get stored in the database.
     /// </summary>
     /// <returns></returns>
     [HttpPost("register-key")]
-    public Task<IActionResult> RegisterKey()
+    public async Task<IActionResult> RegisterKey(string key)
     {
-        throw new NotImplementedException();
+        await _openAiService.RegisterKeyAsync(key);
+        return Ok();
     }
 
     /// <summary>
@@ -26,8 +35,9 @@ public class OpenAiController : Controller
     /// </summary>
     /// <returns></returns>
     [HttpDelete("remove-key")]
-    public Task<IActionResult> RemoveKey()
+    public async Task<IActionResult> RemoveKey()
     {
-        throw new NotImplementedException();
+        await _openAiService.RemoveKeyAsync();
+        return Ok();
     }
 }

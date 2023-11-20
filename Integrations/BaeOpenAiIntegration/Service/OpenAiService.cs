@@ -1,4 +1,7 @@
 
+using BaeDB;
+using Microsoft.EntityFrameworkCore;
+
 namespace BaeOpenAiIntegration.Service;
 
 /// <summary>
@@ -6,13 +9,38 @@ namespace BaeOpenAiIntegration.Service;
 /// </summary>
 public class OpenAiService : IOpenAiService
 {
-    public Task RegisterKey(string key)
+    private readonly BaeDbContext _dbContext;
+
+    public OpenAiService(BaeDbContext dbContext)
     {
-        throw new NotImplementedException();
+        _dbContext = dbContext;
     }
 
-    public Task RemoveKey()
+    public async Task RegisterKeyAsync(string key)
     {
-        throw new NotImplementedException();
+        // Remove the old key if it exists
+        var oldEntity = await _dbContext.OpenAiIntegration.FirstOrDefaultAsync();
+        if (oldEntity != null)
+        {
+            _dbContext.Remove(oldEntity);
+        }
+
+        // Add the new key
+        _dbContext.Add(new BaeDB.Entity.OpenAiIntegrationEntity
+        {
+            Id = 0,
+            ApiKey = key
+        });
+        await _dbContext.SaveChangesAsync();
+    }
+
+    public async Task RemoveKeyAsync()
+    {
+        var entity = await _dbContext.OpenAiIntegration.FirstOrDefaultAsync();
+        if (entity != null)
+        {
+            _dbContext.Remove(entity);
+            await _dbContext.SaveChangesAsync();
+        }
     }
 }
