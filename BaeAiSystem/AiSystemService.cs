@@ -11,7 +11,6 @@ using Microsoft.EntityFrameworkCore;
 /// </summary>
 public class AiSystemService : IAiSystemService
 {
-    // The integration manager.
     private readonly AiServiceIntegrationManager _integrationManager;
     private readonly BaeDbContext _dbcontext;
 
@@ -26,14 +25,29 @@ public class AiSystemService : IAiSystemService
         {
             Name = aiSystem.Name,
             Type = aiSystem.Type,
-            Source = aiSystem.Source,
-            Description = aiSystem.Description,
+            Integration = aiSystem.Integration,
+            Purpose = aiSystem.Purpose,
             DateAdded = aiSystem.DateAdded
         }).ToList();
 
     public async Task ApproveAiSystemsAsync(List<AiSystem> aiSystems)
     {
-        aiSystems.ForEach(aisystem => _dbcontext.ApprovedAiSystems.Add(new ApprovedAiSystemLinkTable { AiSystemId = string.Empty }));
+        aiSystems.ForEach(aisystem =>
+        {
+            string id = aisystem.GenerateId();
+            // Check if the AI system already exists.
+            if (_dbcontext.AiSystems.Any(aiSystem => aiSystem.Id == id))
+                return;
+            _dbcontext.AiSystems.Add(new AiSystemEntity
+            {
+                Id = id,
+                Name = aisystem.Name,
+                Type = aisystem.Type,
+                Integration = aisystem.Integration,
+                Purpose = aisystem.Purpose,
+                DateAdded = aisystem.DateAdded
+            });
+        });
         await _dbcontext.SaveChangesAsync();
     }
 

@@ -1,3 +1,5 @@
+using MongoDB.Bson.Serialization.Attributes;
+
 namespace BaeDB.Entity;
 
 /// <summary>
@@ -5,6 +7,7 @@ namespace BaeDB.Entity;
 /// </summary>
 public class OpenAiIntegrationEntity
 {
-    public int Id { get; set; }
+    [BsonRepresentation(MongoDB.Bson.BsonType.ObjectId)]
+    public string Id { get; set; }
     public string ApiKey { get; set; }
 }

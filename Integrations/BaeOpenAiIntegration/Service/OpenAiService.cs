@@ -28,7 +28,7 @@ public class OpenAiService : IOpenAiService
         // Add the new key
         _dbContext.Add(new BaeDB.Entity.OpenAiIntegrationEntity
         {
-            Id = 0,
+            Id = Guid.NewGuid().ToString(),
             ApiKey = key
         });
         await _dbContext.SaveChangesAsync();

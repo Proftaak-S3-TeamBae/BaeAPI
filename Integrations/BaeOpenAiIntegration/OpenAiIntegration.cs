@@ -55,8 +55,8 @@ public class OpenAiIntegration : IAiServiceIntegration
             {
                 Name = model.Id ?? "Unknown",
                 Type = "LLM",
-                Source = "OpenAI",
-                Description = "",
+                Integration = 1,
+                Purpose = "",
                 DateAdded = DateTime.Now
             });
         }
