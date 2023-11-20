@@ -5,6 +5,16 @@ namespace BaeDB.Entity;
 /// </summary>
 public class AiSystemEntity
 {
+    public AiSystemEntity(string id, string name, string type, string purpose, DateTime dateadded, int intergration, string version)
+    {
+        Id = id;
+        Name = name;
+        Type = type;
+        Purpose = purpose;
+        DateAdded = dateadded;
+        Integration = intergration;
+        Version = version;
+    }
     public string Id { get; set; }
     public string Name { get; set; }
     public string Type { get; set; }
