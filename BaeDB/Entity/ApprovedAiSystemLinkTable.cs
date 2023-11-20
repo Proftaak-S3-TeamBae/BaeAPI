@@ -1,4 +1,5 @@
 using System.Data.Common;
+using MongoDB.Bson.Serialization.Attributes;
 
 namespace BaeDB.Entity;
 
@@ -7,6 +8,7 @@ namespace BaeDB.Entity;
 /// </summary>
 public class ApprovedAiSystemLinkTable
 {
-    public int Id { get; set; }
+    [BsonRepresentation(MongoDB.Bson.BsonType.ObjectId)]
+    public string Id { get; set; }
     public string AiSystemId { get; set; }
 }

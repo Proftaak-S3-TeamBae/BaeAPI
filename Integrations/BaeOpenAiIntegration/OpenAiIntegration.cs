@@ -57,6 +57,7 @@ public class OpenAiIntegration : IAiServiceIntegration
                 Type = "LLM",
                 Integration = 1,
                 Purpose = "",
+                Version = model.Id ?? "In Name",
                 DateAdded = DateTime.Now
             });
         }
