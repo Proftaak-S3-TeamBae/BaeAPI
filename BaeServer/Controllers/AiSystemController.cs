@@ -23,7 +23,7 @@ public class AiSystemController : Controller
     /// Get all detected AI systems from the integrations related to the user.
     /// </summary>
     /// <returns>The detected AI systems from the integrations.</returns>
-    [HttpGet]
+    [HttpGet("scan")]
     public async Task<ActionResult<List<AiSystemDTO>>> Get([FromQuery] int page = 0)
     {
         var systemList = await _aiSystemService.GetAiSystemsAsync();
@@ -41,7 +41,8 @@ public class AiSystemController : Controller
                 Name = systemList[i].Name,
                 DateAdded = systemList[i].DateAdded,
                 Description = systemList[i].Purpose,
-                Source = ((Integration)systemList[i].Integration).ToString(), // Hacky but not a crime!
+                Version = systemList[i].Version,
+                Integration = ((Integration)systemList[i].Integration).ToString(), // Hacky but not a crime!
                 Type = systemList[i].Type
             });
         }
@@ -53,4 +54,97 @@ public class AiSystemController : Controller
             Data = systems
         });
     }
+
+    /// <summary>
+    /// Approve an AI system.
+    /// </summary>
+    /// <param name="aiSystem">The AI systems to approve.</param>
+    /// <returns></returns>
+    [HttpPost("approve")]
+    public async Task<IActionResult> Approve([FromBody] List<AiSystemDTO> aiSystems)
+    {
+        await _aiSystemService.ApproveAiSystemsAsync(aiSystems.Select(system => new AiSystem
+        {
+            Name = system.Name,
+            DateAdded = system.DateAdded,
+            Purpose = system.Description,
+            Type = system.Type,
+            Version = system.Version,
+            Integration = (int)Enum.Parse(typeof(Integration), system.Integration)
+        }).ToList());
+        return Ok();
+    }
+
+    /// <summary>
+    /// Disapprove an AI system.
+    /// </summary>
+    /// <param name="aiSystem">The AI systems to disapprove.</param>
+    /// <returns></returns>
+    [HttpPost("disapprove")]
+    public async Task<IActionResult> Disapprove([FromBody] List<AiSystemDTO> aiSystems)
+    {
+        await _aiSystemService.DisapproveAiSystemsAsync(aiSystems.Select(system => new AiSystem
+        {
+            Name = system.Name,
+            DateAdded = system.DateAdded,
+            Purpose = system.Description,
+            Type = system.Type,
+            Version = system.Version,
+            Integration = (int)Enum.Parse(typeof(Integration), system.Integration)
+        }).ToList());
+        return Ok();
+    }
+
+    /// <summary>
+    /// Get all approved AI systems.
+    /// </summary>
+    /// <returns>The approved AI systems.</returns>
+    [HttpGet("approved")]
+    public async Task<ActionResult<List<AiSystemDTO>>> GetApproved()
+    {
+        var systemList = await _aiSystemService.GetApprovedAiSystemsAsync();
+        List<AiSystemDTO> systems = new();
+
+        foreach (var system in systemList)
+        {
+            systems.Add(new AiSystemDTO
+            {
+                Name = system.Name,
+                DateAdded = system.DateAdded,
+                Description = system.Purpose,
+                Version = system.Version,
+                Integration = ((Integration)system.Integration).ToString(), // Hacky but not a crime!
+                Type = system.Type
+            });
+        }
+
+        return Ok(systems);
+    }
+
+    /// <summary>
+    /// Get all disapproved AI systems.
+    /// </summary>
+    /// <returns>The disapproved AI systems.</returns>
+    [HttpGet("disapproved")]
+    public async Task<ActionResult<List<AiSystemDTO>>> GetDisapproved()
+    {
+        var systemList = await _aiSystemService.GetDisapprovedAiSystemsAsync();
+        List<AiSystemDTO> systems = new();
+
+        foreach (var system in systemList)
+        {
+            systems.Add(new AiSystemDTO
+            {
+                Name = system.Name,
+                DateAdded = system.DateAdded,
+                Description = system.Purpose,
+                Version = system.Version,
+                Integration = ((Integration)system.Integration).ToString(), // Hacky but not a crime!
+                Type = system.Type
+            });
+        }
+
+        return Ok(systems);
+    }
+
 }
