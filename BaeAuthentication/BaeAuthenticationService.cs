@@ -45,7 +45,6 @@ public class BaeAuthenticationService : IBaeAuthenticationService
             new Claim(JwtClaimTypes.Email, user.Email),
             new Claim(JwtClaimTypes.Id, user.Id)
         });
-
         return GenerateJwtToken(claimsIdentityUser);
     }
 
