@@ -15,6 +15,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BaeOpenAiIntegration", "Int
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BaeDB", "BaeDB\BaeDB.csproj", "{02DA5DBA-0AE1-4AAD-9539-6ACC578B1F26}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BaeAuthentication", "BaeAuthentication\BaeAuthentication.csproj", "{69DB31DF-315E-4EC7-93E9-CB0AF81182CE}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -85,6 +87,18 @@ Global
 		{02DA5DBA-0AE1-4AAD-9539-6ACC578B1F26}.Release|x64.Build.0 = Release|Any CPU
 		{02DA5DBA-0AE1-4AAD-9539-6ACC578B1F26}.Release|x86.ActiveCfg = Release|Any CPU
 		{02DA5DBA-0AE1-4AAD-9539-6ACC578B1F26}.Release|x86.Build.0 = Release|Any CPU
+		{69DB31DF-315E-4EC7-93E9-CB0AF81182CE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{69DB31DF-315E-4EC7-93E9-CB0AF81182CE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{69DB31DF-315E-4EC7-93E9-CB0AF81182CE}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{69DB31DF-315E-4EC7-93E9-CB0AF81182CE}.Debug|x64.Build.0 = Debug|Any CPU
+		{69DB31DF-315E-4EC7-93E9-CB0AF81182CE}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{69DB31DF-315E-4EC7-93E9-CB0AF81182CE}.Debug|x86.Build.0 = Debug|Any CPU
+		{69DB31DF-315E-4EC7-93E9-CB0AF81182CE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{69DB31DF-315E-4EC7-93E9-CB0AF81182CE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{69DB31DF-315E-4EC7-93E9-CB0AF81182CE}.Release|x64.ActiveCfg = Release|Any CPU
+		{69DB31DF-315E-4EC7-93E9-CB0AF81182CE}.Release|x64.Build.0 = Release|Any CPU
+		{69DB31DF-315E-4EC7-93E9-CB0AF81182CE}.Release|x86.ActiveCfg = Release|Any CPU
+		{69DB31DF-315E-4EC7-93E9-CB0AF81182CE}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

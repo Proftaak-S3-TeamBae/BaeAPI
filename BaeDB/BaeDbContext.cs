@@ -1,4 +1,9 @@
 ﻿using BaeDB.Entity;
+using Duende.IdentityServer.EntityFramework.Entities;
+using Duende.IdentityServer.EntityFramework.Interfaces;
+
+using Duende.IdentityServer.Stores;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using MongoDB.Driver;
 
@@ -23,6 +28,13 @@ public class BaeDbContext : DbContext
     /// The database set for the disapproved ai system link table
     /// </summary>
     public DbSet<DisapprovedAiSystemLinkTable> DisapprovedAiSystems { get; init; }
+
+    /// <summary>
+    /// Identity users
+    /// </summary>
+    /// <param name="database"></param>
+    /// <returns></returns>
+    public DbSet<IdentityUser> IdentityUsers { get; init; }
 
     public static BaeDbContext Create(IMongoDatabase database)
         => new(new DbContextOptionsBuilder<BaeDbContext>()
