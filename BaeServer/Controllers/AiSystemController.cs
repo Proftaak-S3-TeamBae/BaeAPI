@@ -1,6 +1,7 @@
 using BaeAiSystem;
 using BaeServer.API;
 using BaeServer.DTO.AiSystem;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace BaeServer.Controllers;
@@ -8,6 +9,7 @@ namespace BaeServer.Controllers;
 /// <summary>
 /// The controller for fetching detected AI systems from the integrations.
 /// </summary>
+[Authorize]
 [ApiController]
 [Route("api/[controller]")]
 public class AiSystemController : Controller

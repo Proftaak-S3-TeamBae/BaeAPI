@@ -1,4 +1,9 @@
 ﻿using BaeDB.Entity;
+using Duende.IdentityServer.EntityFramework.Entities;
+using Duende.IdentityServer.EntityFramework.Interfaces;
+
+using Duende.IdentityServer.Stores;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using MongoDB.Driver;
 
@@ -29,6 +34,13 @@ public class BaeDbContext : DbContext
     /// </summary>
     public DbSet<OpenAiIntegrationEntity> OpenAiIntegration { get; init; }
 
+    /// <summary>
+    /// Identity users
+    /// </summary>
+    /// <param name="database"></param>
+    /// <returns></returns>
+    public DbSet<IdentityUser> IdentityUsers { get; init; }
+
     public static BaeDbContext Create(IMongoDatabase database)
         => new(new DbContextOptionsBuilder<BaeDbContext>()
             .UseMongoDB(database.Client, database.DatabaseNamespace.DatabaseName)
@@ -52,6 +64,9 @@ public class BaeDbContext : DbContext
             .HasKey(x => x.Id);
 
         modelBuilder.Entity<OpenAiIntegrationEntity>()
+            .HasKey(x => x.Id);
+
+        modelBuilder.Entity<IdentityUser>()
             .HasKey(x => x.Id);
     }
 }
