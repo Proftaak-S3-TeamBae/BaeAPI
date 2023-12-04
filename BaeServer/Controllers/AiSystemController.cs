@@ -24,7 +24,7 @@ public class AiSystemController : Controller
     /// </summary>
     /// <returns>The detected AI systems from the integrations.</returns>
     [HttpGet("scan")]
-    public async Task<ActionResult<List<AiSystemDTO>>> Get([FromQuery] int page = 0)
+    public async Task<ActionResult<List<AiSystemDTO>>> Scan([FromQuery] int page = 0)
     {
         var systemList = await _aiSystemService.GetAiSystemsAsync();
         List<AiSystemDTO> systems = new();
