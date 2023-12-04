@@ -13,24 +13,23 @@ public class OpenAiIntegration : IAiServiceIntegration
     /// <summary>
     /// The API key for OpenAI.
     /// </summary>
-    public string? ApiKey { get; set; }
+    public string? ApiKey { get; private set; }
 
     public string Id { get; set; } = "BaeOpenAiIntegration";
 
-    public OpenAiIntegration(string? apiKey)
-    {
-        ApiKey = apiKey;
-    }
 
-    public void Initialize(BaeDbContext dbContext)
-    {
-        // Fetch the api key from the database.
-        var apiKey = dbContext.OpenAiIntegration.FirstOrDefault();
-        if (apiKey != null)
-        {
-            ApiKey = apiKey.ApiKey;
-        }
-    }
+    /// <summary>
+    /// Register the API key for OpenAI.
+    /// </summary>
+    /// <param name="key"></param>
+    public void RegisterKey(string key)
+        => ApiKey = key;
+
+    /// <summary>
+    /// Remove the API key for OpenAI from memory.
+    /// </summary>
+    public void RemoveKey()
+        => ApiKey = null;
 
     public async Task<List<FetchedAiSystem>> GetAiSystemsAsync()
     {

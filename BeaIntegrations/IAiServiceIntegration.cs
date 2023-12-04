@@ -13,12 +13,6 @@ public interface IAiServiceIntegration
     public string Id { get; protected set; }
 
     /// <summary>
-    /// Initialize the integration.
-    /// </summary>
-    /// <param name="dbContext"></param>
-    public void Initialize(BaeDbContext dbContext);
-
-    /// <summary>
     /// Get all AI systems from the integration.
     /// </summary>
     /// <returns>The AI systems.</returns>

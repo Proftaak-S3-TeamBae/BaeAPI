@@ -24,11 +24,6 @@ public class BaeDbContext : DbContext
     /// </summary>
     public DbSet<DisapprovedAiSystemLinkTable> DisapprovedAiSystems { get; init; }
 
-    /// <summary>
-    /// The database set for the open ai integration
-    /// </summary>
-    public DbSet<OpenAiIntegrationEntity> OpenAiIntegration { get; init; }
-
     public static BaeDbContext Create(IMongoDatabase database)
         => new(new DbContextOptionsBuilder<BaeDbContext>()
             .UseMongoDB(database.Client, database.DatabaseNamespace.DatabaseName)
@@ -51,7 +46,5 @@ public class BaeDbContext : DbContext
         modelBuilder.Entity<DisapprovedAiSystemLinkTable>()
             .HasKey(x => x.Id);
 
-        modelBuilder.Entity<OpenAiIntegrationEntity>()
-            .HasKey(x => x.Id);
     }
 }
