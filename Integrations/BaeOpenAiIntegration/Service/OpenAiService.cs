@@ -1,5 +1,6 @@
 
 using BaeDB;
+using BaeIntegrations;
 using Microsoft.EntityFrameworkCore;
 
 namespace BaeOpenAiIntegration.Service;
@@ -9,38 +10,22 @@ namespace BaeOpenAiIntegration.Service;
 /// </summary>
 public class OpenAiService : IOpenAiService
 {
-    private readonly BaeDbContext _dbContext;
+    public AiServiceIntegrationManager _aiServiceIntegrationManager;
 
-    public OpenAiService(BaeDbContext dbContext)
+    public OpenAiService(AiServiceIntegrationManager aiServiceIntegrationManager)
     {
-        _dbContext = dbContext;
+        _aiServiceIntegrationManager = aiServiceIntegrationManager;
     }
 
-    public async Task RegisterKeyAsync(string key)
+    public void RegisterKey(string key)
     {
-        // Remove the old key if it exists
-        var oldEntity = await _dbContext.OpenAiIntegration.FirstOrDefaultAsync();
-        if (oldEntity != null)
-        {
-            _dbContext.Remove(oldEntity);
-        }
-
-        // Add the new key
-        _dbContext.Add(new BaeDB.Entity.OpenAiIntegrationEntity
-        {
-            Id = Guid.NewGuid().ToString(),
-            ApiKey = key
-        });
-        await _dbContext.SaveChangesAsync();
+        var integration = _aiServiceIntegrationManager.GetIntegration<OpenAiIntegration>();
+        integration.RegisterKey(key);
     }
 
-    public async Task RemoveKeyAsync()
+    public void RemoveKey()
     {
-        var entity = await _dbContext.OpenAiIntegration.FirstOrDefaultAsync();
-        if (entity != null)
-        {
-            _dbContext.Remove(entity);
-            await _dbContext.SaveChangesAsync();
-        }
+        var integration = _aiServiceIntegrationManager.GetIntegration<OpenAiIntegration>();
+        integration.RemoveKey();
     }
 }

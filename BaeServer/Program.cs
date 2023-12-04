@@ -17,13 +17,7 @@ var builder = WebApplication.CreateBuilder(args);
 static void AddOpenAiIntegration(AiServiceIntegrationManager integrationManager, IServiceCollection services, IConfiguration configuration)
 {
     // Register OpenAI integration
-    // TODO: Fetch the api key from the database once implemented
-#if DEBUG
-    integrationManager.RegisterIntegration(new OpenAiIntegration(configuration["OpenAiKey"]
-        ?? null));
-#else
-    integrationManager.RegisterIntegration(new OpenAiIntegration(null));
-#endif
+    integrationManager.RegisterIntegration(new OpenAiIntegration());
     services.AddSingleton<IOpenAiService, OpenAiService>();
 }
 

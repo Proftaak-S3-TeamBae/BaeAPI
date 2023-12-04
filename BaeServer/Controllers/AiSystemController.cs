@@ -1,4 +1,5 @@
 using BaeAiSystem;
+using BaeOpenAiIntegration.Service;
 using BaeServer.API;
 using BaeServer.DTO.AiSystem;
 using Microsoft.AspNetCore.Mvc;
@@ -13,10 +14,12 @@ namespace BaeServer.Controllers;
 public class AiSystemController : Controller
 {
     private readonly IAiSystemService _aiSystemService;
+    private readonly IOpenAiService _openAiService;
 
-    public AiSystemController(IAiSystemService aiSystemService)
+    public AiSystemController(IAiSystemService aiSystemService, IOpenAiService openAiService)
     {
         _aiSystemService = aiSystemService;
+        _openAiService = openAiService;
     }
 
     /// <summary>
@@ -24,8 +27,11 @@ public class AiSystemController : Controller
     /// </summary>
     /// <returns>The detected AI systems from the integrations.</returns>
     [HttpGet("scan")]
-    public async Task<ActionResult<List<AiSystemDTO>>> Scan([FromQuery] int page = 0)
+    public async Task<ActionResult<List<AiSystemDTO>>> Scan([FromQuery] int page = 0, [FromQuery] string? openaiKey = null)
     {
+        if (openaiKey != null)
+            _openAiService.RegisterKey(openaiKey);
+
         var systemList = await _aiSystemService.GetAiSystemsAsync();
         List<AiSystemDTO> systems = new();
         const int PAGE_MAX = 10;
@@ -46,6 +52,9 @@ public class AiSystemController : Controller
                 Type = systemList[i].Type
             });
         }
+
+        // Remove the key from the registry.
+        _openAiService.RemoveKey();
 
         return Ok(new PagedResponse<AiSystemDTO>
         {

@@ -35,6 +35,15 @@ public class AiServiceIntegrationManager
         => _integrations[id];
 
     /// <summary>
+    /// Get an AI service integration.
+    /// </summary>
+    /// <typeparam name="T">The integration type.</typeparam>
+    /// <returns>The integration.</returns>
+    /// <exception cref="KeyNotFoundException">Thrown if the integration is not found.</exception>
+    public T GetIntegration<T>() where T : IAiServiceIntegration
+        => (T)_integrations.First(integration => integration.Value.GetType() == typeof(T)).Value;
+
+    /// <summary>
     /// Get all AI systems from all integrations.
     /// </summary>
     /// <returns>The AI systems.</returns>
@@ -43,9 +52,13 @@ public class AiServiceIntegrationManager
         var aiSystems = new List<FetchedAiSystem>();
         foreach (var integration in _integrations.Values)
         {
-            integration.Initialize(_dbContext);
-            var fetchedAiSystems = await integration.GetAiSystemsAsync();
-            aiSystems.AddRange(fetchedAiSystems);
+            // TODO: Add logging.
+            try
+            {
+                var fetchedAiSystems = await integration.GetAiSystemsAsync();
+                aiSystems.AddRange(fetchedAiSystems);
+            }
+            catch { }
         }
 
         return aiSystems;
