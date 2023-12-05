@@ -29,6 +29,16 @@ public struct AiSystem
     public string Version { get; set; }
 
     /// <summary>
+    /// The identifier of the origin account 
+    /// </summary>
+    public string Origin { get; set; }
+
+    /// <summary>
+    /// The description of the AI system.
+    /// </summary>
+    public string Description { get; set; }
+
+    /// <summary>
     /// The description of how the AI system is used.
     /// </summary>
     public string Purpose { get; set; }
@@ -39,19 +49,15 @@ public struct AiSystem
     public DateTime DateAdded { get; set; }
 
     /// <summary>
-    /// Generate a unique ID for the AI system by using the name, type, source and version and encoding it in base64.
+    /// Generate a unique ID for the AI system by using the name, source, origin and version and encoding it in base64.
     /// </summary>
     /// <returns></returns>
     public readonly string GenerateId()
-    {
-        var json = JsonSerializer.Serialize(new
+        => Convert.ToBase64String(Encoding.UTF8.GetBytes(JsonSerializer.Serialize(new
         {
             Name,
-            Type,
             Integration,
+            Origin,
             Version
-        });
-        var bytes = Encoding.UTF8.GetBytes(json);
-        return Convert.ToBase64String(bytes);
-    }
+        })));
 }

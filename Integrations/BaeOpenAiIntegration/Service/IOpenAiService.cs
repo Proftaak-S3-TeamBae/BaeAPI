@@ -17,5 +17,5 @@ public interface IOpenAiService
     /// This will remove the key from the database.
     /// </summary>
     /// <returns></returns>
-    public void RemoveKey();
+    public void RemoveKeys();
 }

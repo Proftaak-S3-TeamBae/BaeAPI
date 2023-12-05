@@ -23,9 +23,9 @@ public class OpenAiService : IOpenAiService
         integration.RegisterKey(key);
     }
 
-    public void RemoveKey()
+    public void RemoveKeys()
     {
         var integration = _aiServiceIntegrationManager.GetIntegration<OpenAiIntegration>();
-        integration.RemoveKey();
+        integration.RemoveKeys();
     }
 }

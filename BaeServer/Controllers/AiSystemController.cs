@@ -27,10 +27,12 @@ public class AiSystemController : Controller
     /// </summary>
     /// <returns>The detected AI systems from the integrations.</returns>
     [HttpGet("scan")]
-    public async Task<ActionResult<List<AiSystemDTO>>> Scan([FromQuery] int page = 0, [FromQuery] string? openaiKey = null)
+    public async Task<ActionResult<List<AiSystemDTO>>> Scan([FromQuery] int page = 0, [FromQuery] List<string>? openaiKeys = null)
     {
-        if (openaiKey != null)
-            _openAiService.RegisterKey(openaiKey);
+        // Register openai keys
+        if (openaiKeys != null)
+            foreach (var key in openaiKeys)
+                _openAiService.RegisterKey(key);
 
         var systemList = await _aiSystemService.GetAiSystemsAsync();
         List<AiSystemDTO> systems = new();
@@ -49,12 +51,13 @@ public class AiSystemController : Controller
                 Description = systemList[i].Purpose,
                 Version = systemList[i].Version,
                 Integration = ((Integration)systemList[i].Integration).ToString(), // Hacky but not a crime!
+                Origin = systemList[i].Origin,
                 Type = systemList[i].Type
             });
         }
 
-        // Remove the key from the registry.
-        _openAiService.RemoveKey();
+        // Remove the keys from the registry.
+        _openAiService.RemoveKeys();
 
         return Ok(new PagedResponse<AiSystemDTO>
         {
@@ -62,6 +65,27 @@ public class AiSystemController : Controller
             TotalPages = systemList.Count / PAGE_MAX,
             Data = systems
         });
+    }
+
+    /// <summary>
+    /// Add/Update an AI system.
+    /// </summary>
+    /// <param name="aiSystem">The AI system to add/update.</param>
+    /// <returns></returns>
+    [HttpPost("add")]
+    public async Task<IActionResult> Add([FromBody] List<AiSystemDTO> aiSystem)
+    {
+        await _aiSystemService.ApproveAiSystemsAsync(aiSystem.Select(system => new AiSystem
+        {
+            Name = system.Name,
+            DateAdded = system.DateAdded,
+            Purpose = system.Description,
+            Type = system.Type,
+            Version = system.Version,
+            Integration = (int)Enum.Parse(typeof(Integration), system.Integration),
+            Origin = system.Origin,
+        }).ToList());
+        return Ok();
     }
 
     /// <summary>
@@ -79,7 +103,8 @@ public class AiSystemController : Controller
             Purpose = system.Description,
             Type = system.Type,
             Version = system.Version,
-            Integration = (int)Enum.Parse(typeof(Integration), system.Integration)
+            Integration = (int)Enum.Parse(typeof(Integration), system.Integration),
+            Origin = system.Origin,
         }).ToList());
         return Ok();
     }
@@ -99,7 +124,8 @@ public class AiSystemController : Controller
             Purpose = system.Description,
             Type = system.Type,
             Version = system.Version,
-            Integration = (int)Enum.Parse(typeof(Integration), system.Integration)
+            Integration = (int)Enum.Parse(typeof(Integration), system.Integration),
+            Origin = system.Origin,
         }).ToList());
         return Ok();
     }
@@ -123,6 +149,7 @@ public class AiSystemController : Controller
                 Description = system.Purpose,
                 Version = system.Version,
                 Integration = ((Integration)system.Integration).ToString(), // Hacky but not a crime!
+                Origin = system.Origin,
                 Type = system.Type
             });
         }
@@ -149,6 +176,7 @@ public class AiSystemController : Controller
                 Description = system.Purpose,
                 Version = system.Version,
                 Integration = ((Integration)system.Integration).ToString(), // Hacky but not a crime!
+                Origin = system.Origin,
                 Type = system.Type
             });
         }

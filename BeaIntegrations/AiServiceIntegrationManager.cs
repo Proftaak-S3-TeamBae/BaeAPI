@@ -1,4 +1,6 @@
 ﻿using BaeDB;
+using BaeIntegrations.Exceptions;
+using Microsoft.Extensions.Logging;
 
 namespace BaeIntegrations;
 
@@ -7,11 +9,11 @@ namespace BaeIntegrations;
 /// </summary>
 public class AiServiceIntegrationManager
 {
-    private readonly BaeDbContext _dbContext;
+    private readonly ILogger _logger;
 
-    public AiServiceIntegrationManager(BaeDbContext dbContext)
+    public AiServiceIntegrationManager(ILogger<AiServiceIntegrationManager> logger)
     {
-        _dbContext = dbContext;
+        _logger = logger;
     }
 
     /// <summary>
@@ -52,13 +54,16 @@ public class AiServiceIntegrationManager
         var aiSystems = new List<FetchedAiSystem>();
         foreach (var integration in _integrations.Values)
         {
-            // TODO: Add logging.
             try
             {
                 var fetchedAiSystems = await integration.GetAiSystemsAsync();
                 aiSystems.AddRange(fetchedAiSystems);
             }
-            catch { }
+            catch (IntegrationUnhandledException) { }
+            catch (Exception e)
+            {
+                _logger.LogError(e, $"Failed to get AI systems from {integration.Id}");
+            }
         }
 
         return aiSystems;
