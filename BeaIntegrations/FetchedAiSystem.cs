@@ -5,6 +5,7 @@ namespace BaeIntegrations;
 /// <summary>
 /// An AI system fetched from an integration.
 /// </summary>
+[Serializable]
 public struct FetchedAiSystem
 {
     /// <summary>
@@ -24,6 +25,12 @@ public struct FetchedAiSystem
     /// </summary>
     [JsonPropertyName("source")]
     public int Integration { get; set; }
+
+    /// <summary>
+    /// The identifier of the origin account
+    /// </summary>
+    [JsonPropertyName("origin")]
+    public string Origin;
 
     /// <summary>
     /// The version of the AI system.

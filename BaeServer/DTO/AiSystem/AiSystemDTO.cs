@@ -26,6 +26,12 @@ public struct AiSystemDTO
     public string Integration { get; set; }
 
     /// <summary>
+    /// The identifier of the origin account
+    /// </summary>
+    [JsonPropertyName("origin")]
+    public string Origin { get; set; }
+
+    /// <summary>
     /// The description of how the AI system is used.
     /// </summary>
     [JsonPropertyName("description")]

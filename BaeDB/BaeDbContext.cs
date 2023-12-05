@@ -41,10 +41,11 @@ public class BaeDbContext : DbContext
             .HasKey(x => x.Id);
 
         modelBuilder.Entity<ApprovedAiSystemLinkTable>()
-            .HasKey(x => x.Id);
+            .HasIndex(x => new { x.Id, x.AiSystemId })
+            .IsUnique();
 
         modelBuilder.Entity<DisapprovedAiSystemLinkTable>()
-            .HasKey(x => x.Id);
-
+            .HasIndex(x => new { x.Id, x.AiSystemId })
+            .IsUnique();
     }
 }
