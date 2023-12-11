@@ -24,6 +24,25 @@ builder.Logging.ClearProviders();
 builder.Logging.AddConsole();
 #endif
 
+builder.Services.AddCors(options =>
+{
+#if DEBUG
+    options.AddPolicy("AllowAll", builder =>
+    {
+        builder.AllowAnyOrigin()
+            .AllowAnyMethod()
+            .AllowAnyHeader();
+    });
+#else
+    options.AddPolicy("AllowAll", builder =>
+    {
+        builder.WithOrigins("http://localhost:5078")
+            .AllowAnyMethod()
+            .AllowAnyHeader();
+    });
+#endif
+});
+
 /// <summary>
 /// Add OpenAI integration to the integration manager.
 /// </summary>
@@ -128,7 +147,17 @@ static void SetupAuthentication(WebApplicationBuilder builder)
                 ValidateLifetime = true,
                 ClockSkew = TimeSpan.Zero
             };
+            options.MapInboundClaims = false;
         });
+
+    builder.Services.Configure<IdentityOptions>(options =>
+    {
+        options.Password.RequireDigit = false;
+        options.Password.RequiredLength = 5;
+        options.Password.RequireLowercase = false;
+        options.Password.RequireNonAlphanumeric = false;
+        options.Password.RequireUppercase = false;
+    });
 }
 
 // Add database context
@@ -161,4 +190,5 @@ app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();
+app.UseCors("AllowAll");
 app.Run();

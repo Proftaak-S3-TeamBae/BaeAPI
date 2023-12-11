@@ -1,3 +1,4 @@
+using System.Security.Claims;
 using Microsoft.AspNetCore.Identity;
 
 namespace BaeAuthentication;
@@ -19,5 +20,17 @@ public interface IBaeAuthenticationService
     /// </summary>
     /// <returns>The jwt token</returns>
     public Task<string> SignInUserAsync(UserManager<IdentityUser> userManager, string usernameOrEmail, string password);
+
+    /// <summary>
+    /// Verify a jwt token
+    /// </summary>
+    /// <returns>Whether jwt token is valid</returns>
+    public Task<bool> VerifyTokenAsync(string token);
+
+    /// <summary>
+    /// Refresh a jwt token
+    /// </summary>
+    /// <returns>The new jwt token</returns>
+    public string RefreshToken(ClaimsPrincipal claimsPrincipal);
 }
 
