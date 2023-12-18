@@ -5,6 +5,7 @@ using System.Text.Json.Serialization;
 /// <summary>
 /// The DTO for the AI system.
 /// </summary>
+[Serializable]
 public struct AiSystemDTO
 {
     /// <summary>
@@ -40,6 +41,7 @@ public struct AiSystemDTO
     /// <summary>
     /// The version of the AI system.
     /// </summary>
+    [JsonPropertyName("version")]
     public string Version { get; set; }
 
     /// <summary>

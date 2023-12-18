@@ -28,45 +28,29 @@ public class AiSystemController : Controller
     /// Get all detected AI systems from the integrations related to the user.
     /// </summary>
     /// <returns>The detected AI systems from the integrations.</returns>
-    [HttpGet("scan")]
-    public async Task<ActionResult<List<AiSystemDTO>>> Scan([FromQuery] int page = 0, [FromQuery] List<string>? openaiKeys = null)
+    [HttpPost("scan")]
+    public async Task<ActionResult<List<AiSystemDTO>>> Scan([FromBody] AiSystemScanDTO dto)
     {
         // Register openai keys
-        if (openaiKeys != null)
-            foreach (var key in openaiKeys)
-                _openAiService.RegisterKey(key);
+        if (dto.OpenAiTokens != null)
+            foreach (var key in dto.OpenAiTokens)
+                if (key != null)
+                    _openAiService.RegisterKey(key);
 
-        var systemList = await _aiSystemService.GetAiSystemsAsync();
-        List<AiSystemDTO> systems = new();
-        const int PAGE_MAX = 10;
-        int startPos = page * PAGE_MAX;
-
-        for (int i = startPos; i < startPos + PAGE_MAX; i++)
+        var systems = await _aiSystemService.GetAiSystemsAsync();
+        var systemDtos = systems.Select(system => new AiSystemDTO
         {
-            if (i >= systemList.Count)
-                break;
+            Name = system.Name,
+            DateAdded = system.DateAdded,
+            Description = system.Purpose,
+            Version = system.Version,
+            Integration = ((Integration)system.Integration).ToString(), // Hacky but not a crime!
+            Origin = system.Origin,
+            Type = system.Type
+        }).ToList();
 
-            systems.Add(new AiSystemDTO
-            {
-                Name = systemList[i].Name,
-                DateAdded = systemList[i].DateAdded,
-                Description = systemList[i].Purpose,
-                Version = systemList[i].Version,
-                Integration = ((Integration)systemList[i].Integration).ToString(), // Hacky but not a crime!
-                Origin = systemList[i].Origin,
-                Type = systemList[i].Type
-            });
-        }
-
-        // Remove the keys from the registry.
         _openAiService.RemoveKeys();
-
-        return Ok(new PagedResponse<AiSystemDTO>
-        {
-            CurrentPage = page,
-            TotalPages = systemList.Count / PAGE_MAX,
-            Data = systems
-        });
+        return Ok(PagedResponse<AiSystemDTO>.FromList(systemDtos, dto.Page, dto.Max));
     }
 
     /// <summary>
@@ -137,7 +121,7 @@ public class AiSystemController : Controller
     /// </summary>
     /// <returns>The approved AI systems.</returns>
     [HttpGet("approved")]
-    public async Task<ActionResult<List<AiSystemDTO>>> GetApproved()
+    public async Task<ActionResult<List<AiSystemDTO>>> GetApproved([FromQuery] int page = 0, [FromQuery] int pageSize = 10)
     {
         var systemList = await _aiSystemService.GetApprovedAiSystemsAsync();
         List<AiSystemDTO> systems = new();
@@ -156,7 +140,7 @@ public class AiSystemController : Controller
             });
         }
 
-        return Ok(systems);
+        return Ok(PagedResponse<AiSystemDTO>.FromList(systems, page, pageSize));
     }
 
     /// <summary>
@@ -164,7 +148,7 @@ public class AiSystemController : Controller
     /// </summary>
     /// <returns>The disapproved AI systems.</returns>
     [HttpGet("disapproved")]
-    public async Task<ActionResult<List<AiSystemDTO>>> GetDisapproved()
+    public async Task<ActionResult<List<AiSystemDTO>>> GetDisapproved([FromQuery] int page = 0, [FromQuery] int pageSize = 10)
     {
         var systemList = await _aiSystemService.GetDisapprovedAiSystemsAsync();
         List<AiSystemDTO> systems = new();
@@ -183,7 +167,8 @@ public class AiSystemController : Controller
             });
         }
 
-        return Ok(systems);
+        return Ok(PagedResponse<AiSystemDTO>.FromList(systems, page, pageSize));
     }
+
 
 }
