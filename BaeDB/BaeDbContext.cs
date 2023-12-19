@@ -39,6 +39,7 @@ public class BaeDbContext : DbContext
     public static BaeDbContext Create(IMongoDatabase database)
         => new(new DbContextOptionsBuilder<BaeDbContext>()
             .UseMongoDB(database.Client, database.DatabaseNamespace.DatabaseName)
+            .UseQueryTrackingBehavior(QueryTrackingBehavior.NoTracking)
             .Options);
 
     public BaeDbContext(DbContextOptions options)

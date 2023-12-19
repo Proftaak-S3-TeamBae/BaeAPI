@@ -117,6 +117,27 @@ public class AiSystemController : Controller
     }
 
     /// <summary>
+    /// Remove an AI system from the database.
+    /// </summary>
+    /// <param name="aiSystem">The AI system to remove.</param>
+    /// <returns></returns>
+    [HttpPost("remove")]
+    public async Task<IActionResult> Remove([FromBody] List<AiSystemDTO> aiSystems)
+    {
+        await _aiSystemService.RemoveAiSystemsAsync(aiSystems.Select(system => new AiSystem
+        {
+            Name = system.Name,
+            DateAdded = system.DateAdded,
+            Purpose = system.Description,
+            Type = system.Type,
+            Version = system.Version,
+            Integration = (int)Enum.Parse(typeof(Integration), system.Integration),
+            Origin = system.Origin,
+        }).ToList());
+        return Ok();
+    }
+
+    /// <summary>
     /// Get all approved AI systems.
     /// </summary>
     /// <returns>The approved AI systems.</returns>

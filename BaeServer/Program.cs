@@ -88,9 +88,6 @@ static BaeDbContext AddDatabaseContext(IServiceCollection services, Configuratio
     var client = new MongoClient(databaseSettings.ConnectionString);
     var database = client.GetDatabase(databaseSettings.DatabaseName);
     var context = BaeDbContext.Create(database);
-    // Disable tracking to fix conflicts. 
-    // NOTE(Lars): This is very much a bandaid. We might need to find a different solution.
-    context.ChangeTracker.QueryTrackingBehavior = QueryTrackingBehavior.NoTracking;
     services.AddSingleton(context);
     return context;
 }

@@ -11,6 +11,7 @@ public class AiServiceIntegrationManager
 {
     private readonly ILogger _logger;
 
+
     public AiServiceIntegrationManager(ILogger<AiServiceIntegrationManager> logger)
     {
         _logger = logger;

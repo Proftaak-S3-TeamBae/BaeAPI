@@ -21,7 +21,8 @@ public class AiSystemService : IAiSystemService
     }
 
     public async Task<List<AiSystem>> GetAiSystemsAsync()
-        => (await _integrationManager.GetAiSystemsAsync()).Select(aiSystem => new AiSystem
+    {
+        var systems = (await _integrationManager.GetAiSystemsAsync()).Select(aiSystem => new AiSystem
         {
             Name = aiSystem.Name,
             Type = aiSystem.Type,
@@ -31,6 +32,18 @@ public class AiSystemService : IAiSystemService
             DateAdded = aiSystem.DateAdded,
             Origin = aiSystem.Origin
         }).ToList();
+        // Filter out systems that are already approved or disapproved.
+        var nonExistingSystems = new List<AiSystem>();
+        foreach (var system in systems)
+        {
+            if (_dbcontext.AiSystems
+                .Any(approvedSystem =>
+                    approvedSystem.Id == system.GenerateId()))
+                continue;
+            nonExistingSystems.Add(system);
+        }
+        return nonExistingSystems;
+    }
 
     public async Task ApproveAiSystemsAsync(List<AiSystem> aiSystems)
     {
@@ -51,20 +64,24 @@ public class AiSystemService : IAiSystemService
                 Origin = aisystem.Origin,
             };
             bool exists = _dbcontext.AiSystems.Any(aiSystem => aiSystem.Id == id);
+            _dbcontext.ChangeTracker.Clear();
             if (exists)
                 _dbcontext.Update(entity);
             else
                 _dbcontext.Add(entity);
 
             // Skip if the system is already approved.
-            var approvedSystem = _dbcontext.ApprovedAiSystems.FirstOrDefault(approvedSystem => approvedSystem.AiSystemId == id);
-            if (approvedSystem != null)
+            var approvedSystem = _dbcontext.ApprovedAiSystems.Any(approvedSystem => approvedSystem.AiSystemId == id);
+            if (approvedSystem)
                 return;
 
             // Remove it from the disapproved systems if it exists.
-            var disapprovedSystem = _dbcontext.DisapprovedAiSystems.FirstOrDefault(disapprovedSystem => disapprovedSystem.AiSystemId == id);
-            if (disapprovedSystem != null)
-                _dbcontext.DisapprovedAiSystems.Remove(disapprovedSystem);
+            if (_dbcontext.DisapprovedAiSystems.Any(disapprovedSystem => disapprovedSystem.AiSystemId == id))
+            {
+                var disapprovedSystem = _dbcontext.DisapprovedAiSystems.FirstOrDefault(disapprovedSystem => disapprovedSystem.AiSystemId == id);
+                if (disapprovedSystem != null)
+                    _dbcontext.DisapprovedAiSystems.Remove(disapprovedSystem);
+            }
 
             // Add the system to the approved systems.
             _dbcontext.ApprovedAiSystems.Add(new ApprovedAiSystemLinkTable
@@ -118,6 +135,7 @@ public class AiSystemService : IAiSystemService
                 Origin = aisystem.Origin,
             };
             bool exists = _dbcontext.AiSystems.Any(aiSystem => aiSystem.Id == id);
+            _dbcontext.ChangeTracker.Clear();
             if (exists)
                 _dbcontext.Update(entity);
             else
@@ -125,14 +143,17 @@ public class AiSystemService : IAiSystemService
 
 
             // Skip if the system is already disapproved.
-            var disapprovedSystem = _dbcontext.DisapprovedAiSystems.FirstOrDefault(disapprovedSystem => disapprovedSystem.AiSystemId == id);
-            if (disapprovedSystem != null)
+            var disapprovedSystem = _dbcontext.DisapprovedAiSystems.Any(disapprovedSystem => disapprovedSystem.AiSystemId == id);
+            if (disapprovedSystem)
                 return;
 
             // Remove it from the approved systems if it exists.
-            var approvedSystem = _dbcontext.ApprovedAiSystems.FirstOrDefault(approvedSystem => approvedSystem.AiSystemId == id);
-            if (approvedSystem != null)
-                _dbcontext.ApprovedAiSystems.Remove(approvedSystem);
+            if (_dbcontext.ApprovedAiSystems.Any(approvedSystem => approvedSystem.AiSystemId == id))
+            {
+                var approvedSystem = _dbcontext.ApprovedAiSystems.FirstOrDefault(approvedSystem => approvedSystem.AiSystemId == id);
+                if (approvedSystem != null)
+                    _dbcontext.ApprovedAiSystems.Remove(approvedSystem);
+            }
 
             // Add the system to the disapproved systems.
             _dbcontext.DisapprovedAiSystems.Add(new DisapprovedAiSystemLinkTable
@@ -164,5 +185,13 @@ public class AiSystemService : IAiSystemService
                 });
         });
         return result;
+    }
+
+    public Task RemoveAiSystemsAsync(List<AiSystem> aiSystems)
+    {
+        var ids = aiSystems.Select(aiSystem => aiSystem.GenerateId()).ToList();
+        var entities = _dbcontext.AiSystems.Where(aiSystem => ids.Contains(aiSystem.Id));
+        _dbcontext.AiSystems.RemoveRange(entities);
+        return _dbcontext.SaveChangesAsync();
     }
 }

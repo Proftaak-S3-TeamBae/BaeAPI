@@ -36,4 +36,11 @@ public interface IAiSystemService
     /// <param name="aiSystems">The AI systems to disapprove.</param>
     /// <returns></returns>
     public Task DisapproveAiSystemsAsync(List<AiSystem> aiSystems);
+
+    /// <summary>
+    /// Remove AI systems.
+    /// </summary>
+    /// <param name="aiSystems">The AI systems to remove.</param>
+    /// <returns></returns>
+    public Task RemoveAiSystemsAsync(List<AiSystem> aiSystems);
 }
