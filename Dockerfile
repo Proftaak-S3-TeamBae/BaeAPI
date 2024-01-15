@@ -18,7 +18,7 @@ COPY ["Integrations/BaeOpenAiIntegration/BaeOpenAiIntegration.csproj", "Integrat
 RUN dotnet nuget locals all --clear
 
 # Restores the packages for the entire solution
-RUN dotnet restore --verbosity normal
+RUN dotnet restore
 
 # Copies the rest of the solution's files
 COPY . .
