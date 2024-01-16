@@ -42,6 +42,7 @@ public class AiSystemService : IAiSystemService
                 continue;
             nonExistingSystems.Add(system);
         }
+        _dbcontext.ChangeTracker.Clear();
         return nonExistingSystems;
     }
 
@@ -91,6 +92,7 @@ public class AiSystemService : IAiSystemService
             });
         });
         await _dbcontext.SaveChangesAsync();
+        _dbcontext.ChangeTracker.Clear();
     }
 
     public async Task<List<AiSystem>> GetApprovedAiSystemsAsync()
@@ -113,6 +115,7 @@ public class AiSystemService : IAiSystemService
                     Origin = aiSystem.Origin,
                 });
         });
+        _dbcontext.ChangeTracker.Clear();
         return result;
     }
 
@@ -135,7 +138,6 @@ public class AiSystemService : IAiSystemService
                 Origin = aisystem.Origin,
             };
             bool exists = _dbcontext.AiSystems.Any(aiSystem => aiSystem.Id == id);
-            _dbcontext.ChangeTracker.Clear();
             if (exists)
                 _dbcontext.Update(entity);
             else
@@ -163,6 +165,7 @@ public class AiSystemService : IAiSystemService
             });
         });
         await _dbcontext.SaveChangesAsync();
+        _dbcontext.ChangeTracker.Clear();
     }
 
     public async Task<List<AiSystem>> GetDisapprovedAiSystemsAsync()
@@ -184,14 +187,16 @@ public class AiSystemService : IAiSystemService
                     Origin = aiSystem.Origin
                 });
         });
+        _dbcontext.ChangeTracker.Clear();
         return result;
     }
 
-    public Task RemoveAiSystemsAsync(List<AiSystem> aiSystems)
+    public async Task RemoveAiSystemsAsync(List<AiSystem> aiSystems)
     {
         var ids = aiSystems.Select(aiSystem => aiSystem.GenerateId()).ToList();
         var entities = _dbcontext.AiSystems.Where(aiSystem => ids.Contains(aiSystem.Id));
         _dbcontext.AiSystems.RemoveRange(entities);
-        return _dbcontext.SaveChangesAsync();
+        await _dbcontext.SaveChangesAsync();
+        _dbcontext.ChangeTracker.Clear();
     }
 }
