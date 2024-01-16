@@ -19,7 +19,7 @@ dotnet build --project BaeServer
 Running the project requires an `appsettings.json` to be provided in the same directory as the resulting binary.
 A minimal `appsettings.json` looks like so:
 
-```js
+```jsonc
 {
   "AIScannerDatabase": {
     "ConnectionString": "[DB CONNECTION STRING]",
